@@ -1,53 +1,49 @@
 package domains;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 
 @Entity
 public class Document {
 
     @Id
-    private long id;
+    private Integer id;
 
-    @Lob
-    private String left;
+    private String leftDocument;
 
-    @Lob
-    private String right;
+    private String rightDocument;
 
     public Document() {
 
     }
 
-    public Document(long id, String left, String right) {
+    public Document(Integer id, String left, String right) {
         this.id = id;
-        this.left = left;
-        this.right = right;
+        this.leftDocument = left;
+        this.rightDocument = right;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     public String getLeft() {
-        return left;
+        return leftDocument;
     }
 
     public void setLeft(String left) {
-        this.left = left;
+        this.leftDocument = left;
     }
 
     public String getRight() {
-        return right;
+        return rightDocument;
     }
 
     public void setRight(String right) {
-        this.right = right;
+        this.rightDocument = right;
     }
 
 

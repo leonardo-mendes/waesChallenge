@@ -69,7 +69,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.1.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.1.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.1.2.RELEASE" />
-          <element id="library" level="project" name="Maven: com.h2database:h2:1.4.197" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.13" />
           <element id="library" level="project" name="Maven: org.springframework:spring-core:5.1.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.1.2.RELEASE" />
         </element>
