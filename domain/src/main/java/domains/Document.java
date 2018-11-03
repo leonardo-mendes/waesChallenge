@@ -46,4 +46,8 @@ public class Document {
         this.rightDocument = right;
     }
 
+    @Override
+    public String toString() {
+        return "Document [id=" + getId() + ", left=" + getLeft() + ", right=" + getRight() + "]";
+    }
 }

@@ -20,6 +20,11 @@ public class DocumentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentController.class);
 
+    @GetMapping
+    private DocumentResponse analysis(@PathVariable Integer id) {
+        return new DocumentResponse(documentService.documentAnalysis(id))  ;
+    }
+
     @PostMapping(value = "/left")
     private DocumentResponse left(@PathVariable Integer id, @RequestBody DocumentRequest request) throws Exception {
         return insertDocument(id, request, LEFT_SIDE);
@@ -31,9 +36,8 @@ public class DocumentController {
     }
 
     private DocumentResponse insertDocument(Integer id, DocumentRequest request, String side) throws Exception {
-        LOG.trace("Entering " + side + " (id={}, data={})", id, request);
+        LOG.info("Entering " + side + " (id={}, data={})", id, request);
 
-        LOG.debug("Setting '{}' side of the document with the value: '{}' Left", request);
         documentService.insert(id, request.getData(), side);
         LOG.info("'{}' side of the document saved successfuly for id: '{}'", side, id);
 
