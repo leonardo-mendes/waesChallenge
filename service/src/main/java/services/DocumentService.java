@@ -20,29 +20,25 @@ public class DocumentService {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentService.class);
 
     public Document insert(Integer id, String data, String side) throws Exception {
-        Document document = null;
+        Document document = new Document();
 
-        if (validate(id, data)) {
+        if (this.validate(id, data)) {
             Optional<Document> documentSaved = documentRepository.findById(id);
-
-            if (!documentSaved.isPresent()) {
-                document = new Document();
+            if (documentSaved.isPresent()) {
+                document.setId(id);
+                document.setLeft(documentSaved.get().getLeft());
+                document.setRight(documentSaved.get().getRight());
+            } else {
                 document.setId(id);
             }
 
-            if (Side.LEFT.toString().equalsIgnoreCase(side)) {
-                document.setLeft(data);
-            } else if (Side.RIGHT.toString().equalsIgnoreCase(side)) {
-                document.setRight(data);
-            } else {
-                LOG.warn("Invalid side sent.");
-            }
+            fillDocument(document, data, side);
             document = documentRepository.save(document);
         }
         return document;
     }
 
-    public boolean validate(Integer id, String data) throws ValidationException {
+    private boolean validate(Integer id, String data) throws ValidationException {
         boolean isValid = true;
         LOG.trace("Entering validate(id={}, data={})", id, data);
 
@@ -53,6 +49,16 @@ public class DocumentService {
         }
         LOG.trace("Leaving validate(id, data)={}", isValid);
         return isValid;
+    }
+
+    private void fillDocument(Document document, String data, String side) {
+        if (Side.LEFT.toString().equalsIgnoreCase(side)) {
+            document.setLeft(data);
+        } else if (Side.RIGHT.toString().equalsIgnoreCase(side)) {
+            document.setRight(data);
+        } else {
+            LOG.warn("Invalid side sent.");
+        }
     }
 
 }

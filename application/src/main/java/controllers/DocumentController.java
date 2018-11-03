@@ -1,6 +1,7 @@
 package controllers;
 
 import domains.DocumentRequest;
+import domains.DocumentResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +21,23 @@ public class DocumentController {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentController.class);
 
     @PostMapping(value = "/left")
-    private String left(@PathVariable Integer id, @RequestBody DocumentRequest request) throws Exception {
-        LOG.trace("Entering left(id={}, data={})", id, request);
-
-        LOG.debug("Setting '{}' side of the document with the value: '{}' Left", request);
-        documentService.insert(id, request.getData(), LEFT_SIDE);
-        LOG.info("'{}' side of the document saved successfuly for id: '{}'", LEFT_SIDE, id);
-
-        String message = buildJsonResponse("Document left-side saved successfuly");
-        LOG.trace("Leaving left(id, data)={}", message);
-        return message;
+    private DocumentResponse left(@PathVariable Integer id, @RequestBody DocumentRequest request) throws Exception {
+        return insertDocument(id, request, LEFT_SIDE);
     }
 
-    private String buildJsonResponse(String message) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{\"");
-        sb.append("message");
-        sb.append("\":");
-        sb.append("\"");
-        sb.append(message);
-        sb.append("\"");
-        sb.append("}");
-        return sb.toString();
+    @PostMapping(value = "/right")
+    private DocumentResponse right(@PathVariable Integer id, @RequestBody DocumentRequest request) throws Exception {
+        return insertDocument(id, request, RIGHT_SIDE);
+    }
+
+    private DocumentResponse insertDocument(Integer id, DocumentRequest request, String side) throws Exception {
+        LOG.trace("Entering " + side + " (id={}, data={})", id, request);
+
+        LOG.debug("Setting '{}' side of the document with the value: '{}' Left", request);
+        documentService.insert(id, request.getData(), side);
+        LOG.info("'{}' side of the document saved successfuly for id: '{}'", side, id);
+
+        return new DocumentResponse("Document " + side + "-side saved successfuly");
     }
 
 }
