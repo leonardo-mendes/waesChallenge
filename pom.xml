@@ -30,6 +30,7 @@
         <mockito>1.9.5</mockito>
         <junit>4.12</junit>
         <gson>2.7</gson>
+        <swagger>2.9.2</swagger>
     </properties>
 
     <dependencies>
@@ -74,6 +75,18 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${gson}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger}</version>
         </dependency>
 
     </dependencies>

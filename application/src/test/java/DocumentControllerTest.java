@@ -91,7 +91,7 @@ public class DocumentControllerTest {
     public void ShouldNotFoundDocument() throws Exception {
         String content= "Document not found.";
         when(documentService.documentAnalysis(anyInt())).thenReturn(content);
-        mockMvc.perform(get(API_URL))
+        mockMvc.perform(get(API_URL + "/result"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(buildResponse(content))));
         verify(documentService, times(1)).documentAnalysis(anyInt());
@@ -101,7 +101,7 @@ public class DocumentControllerTest {
     public void ShouldShowMessageToSameDocuments() throws Exception {
         String content= "Document Base64 data are equal.";
         when(documentService.documentAnalysis(anyInt())).thenReturn(content);
-        mockMvc.perform(get(API_URL))
+        mockMvc.perform(get(API_URL + "/result"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(buildResponse(content))));
         verify(documentService, times(1)).documentAnalysis(anyInt());
@@ -111,7 +111,7 @@ public class DocumentControllerTest {
     public void ShouldShowMessageToDifferentDocumentsSizes() throws Exception {
         String content= "Document Base64 data have not same size.";
         when(documentService.documentAnalysis(anyInt())).thenReturn(content);
-        mockMvc.perform(get(API_URL))
+        mockMvc.perform(get(API_URL + "/result"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(buildResponse(content))));
         verify(documentService, times(1)).documentAnalysis(anyInt());
@@ -121,7 +121,7 @@ public class DocumentControllerTest {
     public void ShouldShowMessageToDifferentDocuments() throws Exception {
         String content= "Document Base64 data got the same size, but their offsets are different: 0 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17.";
         when(documentService.documentAnalysis(anyInt())).thenReturn(content);
-        mockMvc.perform(get(API_URL))
+        mockMvc.perform(get(API_URL + "/result"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(buildResponse(content))));
         verify(documentService, times(1)).documentAnalysis(anyInt());
