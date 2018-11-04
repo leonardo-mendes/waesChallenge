@@ -1,0 +1,13 @@
+language: java
+java:
+  - 1.8
+
+script: mvn clean install
+
+notifications:
+email:
+recipients:
+- leonardocm92@hotmail.com
+on_success: always
+on_failure: always
+
