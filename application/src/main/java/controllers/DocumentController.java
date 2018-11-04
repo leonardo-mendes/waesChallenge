@@ -38,10 +38,10 @@ public class DocumentController {
     private DocumentResponse insertDocument(Integer id, DocumentRequest request, String side) throws Exception {
         LOG.info("Entering " + side + " (id={}, data={})", id, request);
 
-        documentService.insert(id, request.getData(), side);
+        String message = documentService.insert(id, request.getData(), side);
         LOG.info("'{}' side of the document saved successfuly for id: '{}'", side, id);
 
-        return new DocumentResponse("Document " + side + "-side saved successfuly");
+        return new DocumentResponse(message);
     }
 
 }
