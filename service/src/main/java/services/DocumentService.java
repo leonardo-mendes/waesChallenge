@@ -24,7 +24,7 @@ public class DocumentService implements DocumentServiceContract {
     public String insert(Integer id, String data, String side) {
         if (this.validateData(data)) {
             documentRepository.save(this.fillDocument(id, data, side));
-            return "Document " + side + "-side saved successfuly.";
+            return "Document " + side + "-side saved successfully.";
         }
         return "DocumentRequest is invalid.";
     }

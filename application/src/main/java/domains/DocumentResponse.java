@@ -2,30 +2,30 @@ package domains;
 
 public class DocumentResponse {
 
-    private String message;
+    private String data;
 
     public DocumentResponse() { }
 
     public DocumentResponse(String message) {
-        this.message = message;
+        this.data = message;
     }
 
     public String getData() {
-        return message;
+        return data;
     }
 
     public void setData(String message) {
-        this.message = message;
+        this.data = message;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{\"");
-        sb.append("message");
+        sb.append("data");
         sb.append("\":");
         sb.append("\"");
-        sb.append(message);
+        sb.append(data);
         sb.append("\"");
         sb.append("}");
         return sb.toString();

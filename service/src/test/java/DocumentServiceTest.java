@@ -24,8 +24,8 @@ public class DocumentServiceTest {
     private final String DATA_ONE = "Y2hhbGxlbmdld2Flcw==";
     private final String DATA_TWO = "d2Flc2NoYWxsZW5nZQ==";
 
-    private Optional<Document> buildDocument(String rightSide, String ledtSide) {
-        return Optional.of(new Document(1, ledtSide, rightSide));
+    private Optional<Document> buildDocument(String rightSide, String leftSide) {
+        return Optional.of(new Document(1, leftSide, rightSide));
     }
 
     @InjectMocks
@@ -41,7 +41,7 @@ public class DocumentServiceTest {
         String message = this.documentService.insert(1, DATA_ONE, LEFT_SIDE);
         verify(documentRepository, times(1)).findById(anyInt());
         verify(documentRepository, times(1)).save(any());
-        assertEquals("Document left-side saved successfuly.", message);
+        assertEquals("Document left-side saved successfully.", message);
     }
 
     @Test
