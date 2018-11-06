@@ -38,4 +38,4 @@ The [solution](https://github.com/leonardo-mendes/waesChallenge) was built with 
 The evolution of your API’s functionality is inevitable, but the headache of maintaining API docs doesn’t have to be. Swagger tools takes the hard work out of generating and maintaining your API docs, ensuring your documentation stays up-to-date as your API evolves.
 
 To explore the api documentation, is necessary run the project and access:
-> http://localhost:8080/swagger-ui.html ([Preview](https://uploaddeimagens.com.br/images/001/706/130/original/swagger.jpg?1541356229) )
+> http://localhost:8080/swagger-ui.html - [Preview](https://uploaddeimagens.com.br/images/001/706/130/original/swagger.jpg?1541356229)
