@@ -1,5 +1,6 @@
 import configTests.ConfigTests;
 import domains.Document;
+import domains.enums.Side;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -8,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import repositories.DocumentRepository;
 import services.DocumentService;
+import services.exceptions.DocumentIncompleteException;
+import services.exceptions.DocumentNotFoundException;
 
 import java.util.Optional;
 
@@ -19,8 +22,6 @@ import static org.mockito.Mockito.*;
 @SpringBootTest(classes = ConfigTests.class)
 public class DocumentServiceTest {
 
-    private final String LEFT_SIDE = "left";
-    private final String RIGHT_SIDE = "right";
     private final String DATA_ONE = "Y2hhbGxlbmdld2Flcw==";
     private final String DATA_TWO = "d2Flc2NoYWxsZW5nZQ==";
 
@@ -38,7 +39,7 @@ public class DocumentServiceTest {
     public void ShouldInsertANewDocument() {
         when(documentRepository.findById(anyInt())).thenReturn(Optional.empty());
         when(documentRepository.save(any())).thenReturn(any());
-        String message = this.documentService.insert(1, DATA_ONE, LEFT_SIDE);
+        String message = this.documentService.insert(1, DATA_ONE, Side.LEFT);
         verify(documentRepository, times(1)).findById(anyInt());
         verify(documentRepository, times(1)).save(any());
         assertEquals("Document left-side saved successfully.", message);
@@ -48,31 +49,28 @@ public class DocumentServiceTest {
     public void ShouldUpdateASideDocument() {
         when(documentRepository.findById(anyInt())).thenReturn(buildDocument(DATA_ONE, DATA_TWO));
         when(documentRepository.save(any())).thenReturn(any());
-        this.documentService.insert(1, DATA_TWO, RIGHT_SIDE);
+        this.documentService.insert(1, DATA_TWO, Side.RIGHT);
         verify(documentRepository, times(1)).findById(anyInt());
         verify(documentRepository, times(1)).save(any());
     }
 
-    @Test
+    @Test(expected = DocumentIncompleteException.class)
     public void ShouldShowMessageDocumentRequestisInvalid() {
-        String message = this.documentService.insert(1, "", LEFT_SIDE);
-        assertEquals("DocumentRequest is invalid.", message);
+        String message = this.documentService.insert(1, "", Side.LEFT);
     }
 
-    @Test
+    @Test(expected = DocumentNotFoundException.class)
     public void ShouldShowMessageDataNotFound() {
         when(documentRepository.findById(anyInt())).thenReturn(Optional.empty());
         String message = this.documentService.documentAnalysis(1);
-        verify(documentRepository, times(1)).findById(anyInt());
-        assertEquals("Document not found.", message);
+        verify(documentRepository, times(1)).findById(anyInt());;
     }
 
-    @Test
+    @Test(expected = DocumentIncompleteException.class)
     public void ShouldShowMessageToDocumentMissing() {
         when(documentRepository.findById(anyInt())).thenReturn(buildDocument("", ""));
         String message = this.documentService.documentAnalysis(1);
         verify(documentRepository, times(1)).findById(anyInt());
-        assertEquals("Document Base64 data missing.", message);
     }
 
     @Test

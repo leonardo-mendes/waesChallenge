@@ -60,31 +60,31 @@ public class DocumentControllerTest {
     @Test
     public void ShouldInsertADocumentInLeftSide() throws Exception {
         String content= "Document " + LEFT_SIDE + "-side saved successfully.";
-        when(documentService.insert(anyInt(), anyString(), anyString())).thenReturn(content);
+        when(documentService.insert(anyInt(), anyString(), any())).thenReturn(content);
         mockMvc.perform(post(API_URL + "/left").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(buildRequest(DATA_ONE))))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(buildResponse(content))));
-        verify(documentService, times(1)).insert(anyInt(), anyString(), anyString());
+        verify(documentService, times(1)).insert(anyInt(), anyString(), any());
     }
 
     @Test
     public void ShouldInsertADocumentInRightSide() throws Exception {
         String content= "Document " + RIGHT_SIDE + "-side saved successfully.";
-        when(documentService.insert(anyInt(), anyString(), anyString())).thenReturn(content);
+        when(documentService.insert(anyInt(), anyString(), any())).thenReturn(content);
         mockMvc.perform(post(API_URL + "/right").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(buildRequest(DATA_ONE))))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(buildResponse(content))));
-        verify(documentService, times(1)).insert(anyInt(), anyString(), anyString());
+        verify(documentService, times(1)).insert(anyInt(), anyString(), any());
     }
 
     @Test
     public void ShouldNotInsertADocument() throws Exception {
         String content= "DocumentRequest is blank or null.";
-        when(documentService.insert(anyInt(), anyString(), anyString())).thenReturn(content);
+        when(documentService.insert(anyInt(), anyString(), any())).thenReturn(content);
         mockMvc.perform(post(API_URL + "/right").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(buildRequest(""))))
                 .andExpect(status().isOk())
                 .andExpect(content().string(gson.toJson(buildResponse(content))));
-        verify(documentService, times(1)).insert(anyInt(), anyString(), anyString());
+        verify(documentService, times(1)).insert(anyInt(), anyString(), any());
     }
 
     @Test

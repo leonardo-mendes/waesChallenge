@@ -31,6 +31,7 @@
         <junit>4.12</junit>
         <gson>2.7</gson>
         <swagger>2.9.2</swagger>
+        <codec>1.10</codec>
     </properties>
 
     <dependencies>
@@ -87,6 +88,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${codec}</version>
         </dependency>
 
     </dependencies>

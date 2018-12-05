@@ -2,7 +2,7 @@ package controllers;
 
 import domains.DocumentRequest;
 import domains.DocumentResponse;
-import io.swagger.annotations.Api;
+import domains.enums.Side;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +15,6 @@ import services.DocumentService;
 @ApiOperation(value = "Document API - This API provides all services for the application.")
 public class DocumentController {
 
-    private final String LEFT_SIDE = "left";
-    private final String RIGHT_SIDE = "right";
-
     @Autowired
     private DocumentService documentService;
 
@@ -26,22 +23,22 @@ public class DocumentController {
     @ApiOperation(value = "This endpoint provide a compare the both documents sides.")
     @GetMapping(value = "/{id}/result")
     private DocumentResponse analysis(@PathVariable Integer id) {
-        return new DocumentResponse(documentService.documentAnalysis(id))  ;
+        return new DocumentResponse(documentService.documentAnalysis(id));
     }
 
     @ApiOperation(value = "This endpoint provides a resource to fill the left side of the document.")
     @PostMapping(value = "/{id}/left")
     private DocumentResponse left(@PathVariable Integer id, @RequestBody DocumentRequest request) throws Exception {
-        return insertDocument(id, request, LEFT_SIDE);
+        return insertDocument(id, request, Side.LEFT);
     }
 
     @ApiOperation(value = "This endpoint provides a resource to fill the right side of the document.")
     @PostMapping(value = "/{id}/right")
     private DocumentResponse right(@PathVariable Integer id, @RequestBody DocumentRequest request) throws Exception {
-        return insertDocument(id, request, RIGHT_SIDE);
+        return insertDocument(id, request, Side.RIGHT);
     }
 
-    private DocumentResponse insertDocument(Integer id, DocumentRequest request, String side) throws Exception {
+    private DocumentResponse insertDocument(Integer id, DocumentRequest request, Side side) throws Exception {
         LOG.info("Entering " + side + " (id={}, data={})", id, request);
 
         String message = documentService.insert(id, request.getData(), side);

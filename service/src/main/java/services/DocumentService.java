@@ -2,6 +2,7 @@ package services;
 
 import domains.Document;
 import domains.enums.Side;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import repositories.DocumentRepository;
 import services.contracts.DocumentServiceContract;
+import services.exceptions.DocumentIncompleteException;
+import services.exceptions.DocumentNotFoundException;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -21,22 +24,19 @@ public class DocumentService implements DocumentServiceContract {
 
     private static final Logger LOG = LoggerFactory.getLogger(DocumentService.class);
 
-    public String insert(Integer id, String data, String side) {
-        if (this.validateData(data)) {
-            documentRepository.save(this.fillDocument(id, data, side));
-            return "Document " + side + "-side saved successfully.";
-        }
-        return "DocumentRequest is invalid.";
+    public String insert(Integer id, String data, Side side) {
+        this.validateData(data);
+        documentRepository.save(this.fillDocument(id, data, side));
+        return "Document " + side.toString().toLowerCase() + "-side saved successfully.";
     }
 
     public String documentAnalysis(Integer id) {
         Optional<Document> documentSaved = documentRepository.findById(id);
         if (!documentSaved.isPresent()) {
-            return "Document not found.";
+            throw new DocumentNotFoundException("Document not found.");
         }
-
         if (StringUtils.isEmpty(documentSaved.get().getLeft()) || StringUtils.isEmpty(documentSaved.get().getRight())) {
-            return "Document Base64 data missing.";
+            throw new DocumentIncompleteException("Document Base64 data missing.");
         }
 
         byte[] bytesLeft = documentSaved.get().getLeft().getBytes();
@@ -45,17 +45,18 @@ public class DocumentService implements DocumentServiceContract {
         return this.findDifferences(bytesLeft, bytesRight);
     }
 
-    private boolean validateData(String data) {
-        boolean isValid = true;
-
+    private void validateData(String data) {
         if (data.isEmpty()) {
             LOG.warn("DocumentRequest is blank or null.");
-            isValid = false;
+            throw new DocumentIncompleteException("DocumentRequest is blank or null.");
         }
-        return isValid;
+        if (!Base64.isBase64(data)){
+            LOG.warn("DocumentRequest is invalid.");
+            throw new DocumentIncompleteException("DocumentRequest is invalid.");
+        }
     }
 
-    private Document fillDocument(Integer id, String data, String side) {
+    private Document fillDocument(Integer id, String data, Side side) {
         Document document = new Document();
         Optional<Document> documentSaved = documentRepository.findById(id);
 
@@ -67,9 +68,9 @@ public class DocumentService implements DocumentServiceContract {
             document.setId(id);
         }
 
-        if (Side.LEFT.toString().equalsIgnoreCase(side)) {
+        if (Side.LEFT.equals(side)) {
             document.setLeft(data);
-        } else if (Side.RIGHT.toString().equalsIgnoreCase(side)) {
+        } else if (Side.RIGHT.equals(side)) {
             document.setRight(data);
         } else {
             LOG.warn("Invalid side sent.");
