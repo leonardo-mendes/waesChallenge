@@ -3,6 +3,7 @@ import configTests.ConfigTests;
 import controllers.DocumentController;
 import domains.DocumentRequest;
 import domains.DocumentResponse;
+import domains.enums.Side;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,8 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = ConfigTests.class)
 public class DocumentControllerTest {
 
-    private final String LEFT_SIDE = "left";
-    private final String RIGHT_SIDE = "right";
     private final String DATA_ONE = "Y2hhbGxlbmdld2Flcw==";
     private static final String API_URL = "/v1/diff/1";
 
@@ -59,7 +58,7 @@ public class DocumentControllerTest {
 
     @Test
     public void ShouldInsertADocumentInLeftSide() throws Exception {
-        String content= "Document " + LEFT_SIDE + "-side saved successfully.";
+        String content= "Document " + Side.LEFT + "-side saved successfully.";
         when(documentService.insert(anyInt(), anyString(), any())).thenReturn(content);
         mockMvc.perform(post(API_URL + "/left").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(buildRequest(DATA_ONE))))
                 .andExpect(status().isOk())
@@ -69,7 +68,7 @@ public class DocumentControllerTest {
 
     @Test
     public void ShouldInsertADocumentInRightSide() throws Exception {
-        String content= "Document " + RIGHT_SIDE + "-side saved successfully.";
+        String content= "Document " + Side.RIGHT + "-side saved successfully.";
         when(documentService.insert(anyInt(), anyString(), any())).thenReturn(content);
         mockMvc.perform(post(API_URL + "/right").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(buildRequest(DATA_ONE))))
                 .andExpect(status().isOk())
@@ -82,9 +81,7 @@ public class DocumentControllerTest {
         String content= "DocumentRequest is blank or null.";
         when(documentService.insert(anyInt(), anyString(), any())).thenReturn(content);
         mockMvc.perform(post(API_URL + "/right").contentType(MediaType.APPLICATION_JSON).content(gson.toJson(buildRequest(""))))
-                .andExpect(status().isOk())
-                .andExpect(content().string(gson.toJson(buildResponse(content))));
-        verify(documentService, times(1)).insert(anyInt(), anyString(), any());
+                .andExpect(status().isBadRequest());
     }
 
     @Test

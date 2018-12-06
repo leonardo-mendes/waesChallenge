@@ -1,7 +1,10 @@
 package domains;
 
+import javax.validation.constraints.NotEmpty;
+
 public class DocumentRequest {
 
+    @NotEmpty(message="This field is mandatory.")
     private String data;
 
     public DocumentRequest() { }

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import services.DocumentService;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/diff")
 @ApiOperation(value = "Document API - This API provides all services for the application.")
@@ -28,13 +30,13 @@ public class DocumentController {
 
     @ApiOperation(value = "This endpoint provides a resource to fill the left side of the document.")
     @PostMapping(value = "/{id}/left")
-    private DocumentResponse left(@PathVariable Integer id, @RequestBody DocumentRequest request) throws Exception {
+    private DocumentResponse left(@PathVariable Integer id, @Valid @RequestBody DocumentRequest request) throws Exception {
         return insertDocument(id, request, Side.LEFT);
     }
 
     @ApiOperation(value = "This endpoint provides a resource to fill the right side of the document.")
     @PostMapping(value = "/{id}/right")
-    private DocumentResponse right(@PathVariable Integer id, @RequestBody DocumentRequest request) throws Exception {
+    private DocumentResponse right(@PathVariable Integer id, @Valid @RequestBody DocumentRequest request) throws Exception {
         return insertDocument(id, request, Side.RIGHT);
     }
 
